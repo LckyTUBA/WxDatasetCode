@@ -24,7 +24,7 @@ Read in our datasets
         
 def getIBTRACS(file):
     #Read in IBTRACS
-    ibtracs_full  = '/Users/elliott/Documents/Grad Research/dataset_readers/dataset_files/ibtracs.since1980.list.v04r01.csv'
+    ibtracs_full  = file
     ibtracs_array   = pd.read_csv(ibtracs_full)
     #read in storm IDs into array
     IBTRACSID = ibtracs_array.loc[:,'SID']
@@ -104,6 +104,10 @@ def getIBTRACS(file):
     
     #read in RMW into array
     rmw = ibtracs_array.loc[:,'USA_RMW']
+    
+    #read in storm translational speed into array
+    stormspeed = ibtracs_array.loc[:,'STORM_SPEED']
+    print(stormspeed[8])
 
 
 
@@ -119,22 +123,43 @@ def getIBTRACS(file):
             orderedUniqueATCFID.append(thisATCFID)
 
     
-    return(ibtracs_array, IBTRACSID, year, number, basin, stormname, timestamp, stormDT, stormNature,
+    return(IBTRACSID, year, number, basin, stormname, timestamp, stormDT, stormNature,
            lat, lon, vmax, pressure, disttoland, disttolandfall, ATCFID, SSHWS, rmw,
-           alluniqueATCFID, orderedUniqueATCFID)
+           stormspeed, alluniqueATCFID, orderedUniqueATCFID)
     
 
 #after all variables read in, delete the first row of each array
-'''
-Example Usage
 
+#Example Usage
+'''
 ibtracs_filename = '/Users/elliott/Documents/Grad Research/dataset_readers/dataset_files/ibtracs.since1980.list.v04r01.csv'
 ibtracs_data = getIBTRACS(ibtracs_filename)
+
+IBTRACSID = ibtracs_data[0]
+year = ibtracs_data[1]
+number = ibtracs_data[2]
+basin = ibtracs_data[3]
+stormname = ibtracs_data[4]
+timestamp = ibtracs_data[5]
+stormDT = ibtracs_data[6]
+stormNature = ibtracs_data[7]
+lat = ibtracs_data[8]
+lon = ibtracs_data[9]
+vmax = ibtracs_data[10]
+pressure = ibtracs_data[11]
+disttoland = ibtracs_data[12]
+disttolandfall = ibtracs_data[13]
+ATCFID = ibtracs_data[14]
+SSHWS = ibtracs_data[15]
+rmw = ibtracs_data[16]
+stormspeed = ibtracs_data[17]
+alluniqueATCFID = ibtracs_data[18]
+orderedUniqueATCFID = ibtracs_data[19]
 '''
 
 def getTCPointsOnly(file):
     #Read in IBTRACS
-    ibtracs_full  = '/Users/elliott/Documents/Grad Research/dataset_readers/dataset_files/ibtracs.since1980.list.v04r01.csv'
+    ibtracs_full  = file
     ibtracs_array   = pd.read_csv(ibtracs_full)
     #read in storm IDs into array
     IBTRACSID = ibtracs_array.loc[:,'SID']
@@ -215,7 +240,8 @@ def getTCPointsOnly(file):
     #read in RMW into array
     rmw = ibtracs_array.loc[:,'USA_RMW']
 
-
+    #read in storm translational speed into array
+    stormspeed = ibtracs_array.loc[:,'STORM_SPEED']
 
 
     #create unique array of all ATCF IDs
@@ -246,13 +272,15 @@ def getTCPointsOnly(file):
     tcATCFID = []
     tcSSHWS = []
     tcrmw = []
+    tcstormspeed = []
+
     
     for i in range(len(IBTRACSID)):
         if (((SSHWS[i] >= -2)) and vmax[i] != ' ' and vmax[i] != 'kts' and ((DTHour[i] == '00') or (DTHour[i] == '06') or (DTHour[i] == '12') or (DTHour[i] == '18'))):
             tcIBTRACSID.append(IBTRACSID[i])
             tcyear.append(year[i])
             tcnumber.append(number[i])
-            tcbasin.append(basin[i])
+            tcbasin.append(str(basin[i]))
             tcstormname.append(stormname[i])
             tctimestamp.append(timestamp[i])
             tcstormDT.append(stormDT[i])
@@ -266,12 +294,15 @@ def getTCPointsOnly(file):
             tcATCFID.append(ATCFID[i])
             tcSSHWS.append(SSHWS[i])
             tcrmw.append(rmw[i])
-            
+            tcstormspeed.append(stormspeed[i])
+
             
     return(tcIBTRACSID, tcyear, tcnumber, tcbasin, tcstormname, tctimestamp, tcstormDT, tcstormNature,
-           tclat, tclon, tcvmax, tcpressure, tcdisttoland, tcdisttolandfall, tcATCFID, tcSSHWS, tcrmw,
+           tclat, tclon, tcvmax, tcpressure, tcdisttoland, tcdisttolandfall, tcATCFID, tcSSHWS, tcrmw, tcstormspeed,
            alluniqueATCFID, orderedUniqueATCFID)
-    
+
+
+
 '''
 Example usage
 
