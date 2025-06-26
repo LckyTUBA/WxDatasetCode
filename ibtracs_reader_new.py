@@ -5,17 +5,10 @@ Created on Tue Sep  3 23:59:35 2024
 
 @author: elliott
 """
-import matplotlib.pyplot as plt
-import matplotlib as mpl
-import matplotlib.colors as mcolors
 import numpy as np
-from scipy.stats import linregress
 import pandas as pd
 import datetime as dt
-import math
-import cartopy.crs as ccrs
-import netCDF4
-import numpy as np
+
 
 '''
 Read in our datasets
